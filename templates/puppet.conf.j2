@@ -1,0 +1,3 @@
+{{ ansible_managed | comment }}
+
+{{ puppet_agent_config | encode_ini(delimiter=' = ') }}

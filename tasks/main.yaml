@@ -1,0 +1,49 @@
+---
+
+- name: Test distribution
+  assert:
+    that: >
+      ansible_facts.os_family == 'RedHat'
+  tags:
+    - puppet_agent_assert
+
+- name: Add YUM repo
+  yum_repository:
+    name: puppet
+    description: Puppet YUM repo
+    baseurl: "{{ puppet_agent_yum_repo_url }}"
+    gpgkey: "{{ puppet_agent_yum_repo_gpgkey }}"
+  tags:
+    - puppet_agent_pkg
+
+- name: Install Puppet Agent package
+  package:
+    name: "{{ puppet_agent_pkg }}"
+  notify:
+    - Restart Puppet Agent service
+  tags:
+    - puppet_agent_pkg
+
+- name: Create Puppet Agent configuration file
+  template:
+    src: puppet.conf.j2
+    dest: "{{ puppet_agent_config_file }}"
+  notify:
+    - Restart Puppet Agent service
+  tags:
+    - puppet_agent_config
+
+- name: Make sure Puppet Agent service is enabled
+  service:
+    name: "{{ puppet_agent_service }}"
+    enabled: yes
+  tags:
+    - puppet_agent_service
+
+- name: Make sure Puppet Agent service is running
+  service:
+    name: "{{ puppet_agent_service }}"
+    state: started
+  register: puppet_agent_service_started
+  tags:
+    - puppet_agent_service

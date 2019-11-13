@@ -1,0 +1,22 @@
+---
+
+# Puppet version
+puppet_agent_version: 6
+
+# YUM repo URL
+puppet_agent_yum_repo_url: http://yum.puppetlabs.com/puppet{{ puppet_agent_version }}/el/{{ ansible_facts.distribution_major_version }}/$basearch
+
+# YUM repo GPG key
+puppet_agent_yum_repo_gpgkey: https://yum.puppetlabs.com/RPM-GPG-KEY-puppet
+
+# Package to be installed
+puppet_agent_pkg: puppet-agent
+
+# Service name
+puppet_agent_service: puppet
+
+# Main config file path
+puppet_agent_config_file: /etc/puppetlabs/puppet/puppet.conf
+
+# Final config
+puppet_agent_config: {}
